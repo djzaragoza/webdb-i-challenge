@@ -60,3 +60,20 @@ router.put('/:id', async (req, res) => {
 
 });
 
+router.delete('/:id', async (req, res) => {
+    const {id} = req.params;
+
+    try {
+        const deleted = await
+        db('accounts').where({id}).del();
+        if(deleted) {
+            res.status(204).end();
+        } else {
+            res.status(404).json({ success: false, error: `Could not find account with id ${id}` });
+        }
+    } catch (err) {
+        res.status(500).json({ success: false, error: 'There was an error while deleting the account.', err });
+    }
+})
+
+module.exports = router;
